@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/pet_adoption_platform}
+      database: ${MONGODB_DATABASE:pet_adoption_platform}
+      auto-index-creation: true
+
+server:
+  port: 5000
+
+logging:
+  level:
+    com.petadoption: DEBUG

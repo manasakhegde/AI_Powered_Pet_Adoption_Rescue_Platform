@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+
+  # ── MongoDB ──
+  mongodb:
+    image: mongo:6.0
+    container_name: pet-adoption-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: pet_adoption_platform
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb-init.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - pet-adoption-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ── Spring Boot Backend ──
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: pet-adoption-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongodb:27017/pet_adoption_platform}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-pet_adoption_platform}
+      JWT_SECRET: ${JWT_SECRET:-furever-home-secret-key-2026}
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - pet-adoption-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ── React Frontend ──
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: pet-adoption-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:5000/api
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - pet-adoption-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  pet-adoption-network:
+    driver: bridge

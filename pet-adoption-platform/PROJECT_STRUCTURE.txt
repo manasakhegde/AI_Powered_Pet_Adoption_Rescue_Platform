@@ -1,0 +1,309 @@
+Pet Adoption Platform - Complete Project Structure
+===================================================
+
+pet-adoption-platform/
+│
+├── README.md                           # Project overview and quick start
+├── SETUP_GUIDE.md                      # Detailed setup instructions
+├── ARCHITECTURE.md                     # Architecture documentation
+├── PROJECT_STRUCTURE.txt               # This file
+│
+├── .gitignore                          # Git ignore patterns
+├── .env.example                        # Environment variables template
+├── docker-compose.yml                  # Docker services configuration
+├── mongodb-init.js                     # MongoDB database initialization
+├── Jenkinsfile                         # CI/CD pipeline definition
+│
+├── backend/                            # SPRING BOOT APPLICATION
+│   ├── pom.xml                         # Maven configuration
+│   ├── Dockerfile                      # Backend container image
+│   ├── .dockerignore                   # Docker build ignore patterns
+│   ├── .gitignore                      # Git ignore for backend
+│   │
+│   └── src/
+│       ├── main/
+│       │   ├── java/com/petadoption/
+│       │   │   ├── PetAdoptionPlatformApplication.java  # Main entry point
+│       │   │   │
+│       │   │   ├── model/              # DATA MODELS (MongoDB)
+│       │   │   │   ├── Pet.java
+│       │   │   │   ├── User.java
+│       │   │   │   ├── Adoption.java
+│       │   │   │   └── Rescue.java
+│       │   │   │
+│       │   │   ├── repository/         # DATA ACCESS LAYER
+│       │   │   │   ├── PetRepository.java
+│       │   │   │   ├── UserRepository.java
+│       │   │   │   ├── AdoptionRepository.java
+│       │   │   │   └── RescueRepository.java
+│       │   │   │
+│       │   │   ├── service/            # BUSINESS LOGIC
+│       │   │   │   ├── PetService.java
+│       │   │   │   ├── UserService.java
+│       │   │   │   ├── AdoptionService.java
+│       │   │   │   └── RescueService.java
+│       │   │   │
+│       │   │   ├── controller/         # REST ENDPOINTS
+│       │   │   │   ├── PetController.java
+│       │   │   │   ├── UserController.java
+│       │   │   │   ├── AdoptionController.java
+│       │   │   │   └── AuthController.java
+│       │   │   │
+│       │   │   ├── config/             # CONFIGURATION
+│       │   │   │   ├── SecurityConfig.java
+│       │   │   │   ├── CorsConfig.java
+│       │   │   │   └── JwtConfig.java
+│       │   │   │
+│       │   │   ├── dto/                # DATA TRANSFER OBJECTS
+│       │   │   │   ├── PetDTO.java
+│       │   │   │   ├── UserDTO.java
+│       │   │   │   └── AdoptionDTO.java
+│       │   │   │
+│       │   │   ├── exception/          # EXCEPTION HANDLING
+│       │   │   │   ├── GlobalExceptionHandler.java
+│       │   │   │   └── CustomException.java
+│       │   │   │
+│       │   │   ├── security/           # SECURITY
+│       │   │   │   ├── JwtTokenProvider.java
+│       │   │   │   ├── JwtAuthenticationFilter.java
+│       │   │   │   └── CustomUserDetailsService.java
+│       │   │   │
+│       │   │   └── util/               # UTILITIES
+│       │   │       ├── DateUtil.java
+│       │   │       ├── ValidationUtil.java
+│       │   │       └── EncryptionUtil.java
+│       │   │
+│       │   └── resources/
+│       │       ├── application.yml           # Main configuration
+│       │       ├── application-dev.yml       # Development profile
+│       │       ├── application-prod.yml      # Production profile
+│       │       ├── application-docker.yml    # Docker profile
+│       │       ├── messages.properties       # Messages/i18n
+│       │       └── logback-spring.xml        # Logging configuration
+│       │
+│       └── test/
+│           └── java/com/petadoption/
+│               ├── service/
+│               │   ├── PetServiceTest.java
+│               │   ├── UserServiceTest.java
+│               │   └── AdoptionServiceTest.java
+│               │
+│               ├── controller/
+│               │   ├── PetControllerTest.java
+│               │   ├── UserControllerTest.java
+│               │   └── AdoptionControllerTest.java
+│               │
+│               └── repository/
+│                   ├── PetRepositoryTest.java
+│                   └── UserRepositoryTest.java
+│
+├── frontend/                           # REACT APPLICATION
+│   ├── package.json                    # Node dependencies
+│   ├── package-lock.json               # Dependency lock file
+│   ├── Dockerfile                      # Frontend container image
+│   ├── .dockerignore                   # Docker build ignore patterns
+│   ├── .gitignore                      # Git ignore for frontend
+│   │
+│   ├── public/
+│   │   ├── index.html                  # Main HTML file
+│   │   ├── favicon.ico                 # Favicon
+│   │   └── manifest.json               # PWA manifest
+│   │
+│   ├── src/
+│   │   ├── index.js                    # React entry point
+│   │   ├── index.css                   # Global styles
+│   │   ├── App.js                      # Main app component
+│   │   │
+│   │   ├── pages/                      # PAGE COMPONENTS
+│   │   │   ├── HomePage.js
+│   │   │   ├── PetsListPage.js
+│   │   │   ├── PetDetailPage.js
+│   │   │   ├── AdoptionFormPage.js
+│   │   │   ├── UserProfilePage.js
+│   │   │   ├── LoginPage.js
+│   │   │   ├── SignupPage.js
+│   │   │   └── NotFoundPage.js
+│   │   │
+│   │   ├── components/                 # REUSABLE COMPONENTS
+│   │   │   ├── Layout.js               # Main layout wrapper
+│   │   │   ├── Header.js               # Navigation header
+│   │   │   ├── Footer.js               # Footer
+│   │   │   ├── PetCard.js              # Pet listing card
+│   │   │   ├── AdoptionForm.js         # Form component
+│   │   │   ├── LoadingSpinner.js       # Loading indicator
+│   │   │   ├── Modal.js                # Modal dialog
+│   │   │   └── Pagination.js           # Pagination control
+│   │   │
+│   │   ├── services/                   # API CLIENTS
+│   │   │   ├── api.js                  # Axios instance
+│   │   │   ├── petService.js           # Pet API calls
+│   │   │   ├── userService.js          # User API calls
+│   │   │   ├── adoptionService.js      # Adoption API calls
+│   │   │   └── authService.js          # Auth API calls
+│   │   │
+│   │   ├── hooks/                      # CUSTOM HOOKS
+│   │   │   ├── usePets.js
+│   │   │   ├── useAuth.js
+│   │   │   ├── useFetch.js
+│   │   │   └── useLocalStorage.js
+│   │   │
+│   │   ├── store/                      # STATE MANAGEMENT (ZUSTAND)
+│   │   │   ├── authStore.js
+│   │   │   ├── petStore.js
+│   │   │   └── adoptionStore.js
+│   │   │
+│   │   ├── utils/                      # UTILITIES
+│   │   │   ├── formatters.js           # Data formatting
+│   │   │   ├── validators.js           # Form validation
+│   │   │   ├── constants.js            # Constants
+│   │   │   └── errorHandler.js         # Error handling
+│   │   │
+│   │   └── styles/                     # STYLES
+│   │       ├── tailwind.css
+│   │       └── custom.css
+│   │
+│   ├── tailwind.config.js              # Tailwind configuration
+│   ├── postcss.config.js               # PostCSS configuration
+│   └── .env.local                      # Local environment variables
+│
+├── docs/                               # DOCUMENTATION (Optional)
+│   ├── API_DOCUMENTATION.md            # API endpoint docs
+│   ├── CONTRIBUTING.md                 # Contribution guidelines
+│   ├── TROUBLESHOOTING.md              # Common issues
+│   └── DEPLOYMENT.md                   # Deployment guides
+│
+├── scripts/                            # HELPER SCRIPTS (Optional)
+│   ├── deploy.sh                       # Deployment script
+│   ├── backup-db.sh                    # Database backup
+│   └── health-check.sh                 # Health check script
+│
+└── k8s/                                # KUBERNETES (Optional)
+    ├── backend-deployment.yaml
+    ├── frontend-deployment.yaml
+    ├── mongodb-deployment.yaml
+    ├── backend-service.yaml
+    ├── frontend-service.yaml
+    ├── configmap.yaml
+    └── secrets.yaml
+
+
+KEY DIRECTORIES SUMMARY
+=======================
+
+Backend Java Packages:
+  - model/          → MongoDB document definitions
+  - repository/     → Database access layer
+  - service/        → Business logic
+  - controller/     → REST API endpoints
+  - config/         → Configuration classes
+  - dto/            → Data transfer objects
+  - security/       → JWT and authentication
+  - util/           → Helper utilities
+
+Frontend Folders:
+  - pages/          → Full page components
+  - components/     → Reusable UI components
+  - services/       → API communication
+  - hooks/          → Custom React hooks
+  - store/          → State management
+  - utils/          → Helper functions
+  - styles/         → CSS and styling
+
+
+FILE NAMING CONVENTIONS
+=======================
+
+Java Files:
+  - Classes:    PascalCase.java (e.g., PetService.java)
+  - Interfaces: IPascalCase.java (e.g., IPetRepository.java)
+  - Tests:      ClassName + Test.java (e.g., PetServiceTest.java)
+
+JavaScript Files:
+  - Components: PascalCase.js (e.g., PetCard.js)
+  - Utilities:  camelCase.js (e.g., formatters.js)
+  - Hooks:      useCapitalCase.js (e.g., usePets.js)
+  - Services:   camelCase.js (e.g., petService.js)
+
+Configuration:
+  - application.yml for Spring Boot
+  - .env for environment variables
+  - config files at project root
+
+
+DATABASE COLLECTIONS (MongoDB)
+===============================
+
+pets:
+  - Adoptable pets with details
+  - Indexes: adoptionStatus, species, location, microchipId
+
+users:
+  - Platform users (adopters, staff, admins)
+  - Indexes: email (unique), role, phone, active
+
+adoptions:
+  - Adoption applications
+  - Indexes: petId, adopterId, applicationStatus, paymentStatus
+
+rescues:
+  - Rescue centers and operations
+  - Indexes: location, organizationName, status
+
+
+PORTS CONFIGURATION
+===================
+
+Services:
+  - Frontend:        3000
+  - Backend API:     8080
+  - MongoDB:         27017
+  - MongoDB Express: 8081
+  - Jenkins:         8081 (if running separately)
+
+
+ENVIRONMENT FILES
+=================
+
+.env                  → Main environment file (not in git)
+.env.example          → Template for .env
+.env.local            → Local overrides (frontend)
+application.yml       → Spring Boot main config
+application-dev.yml   → Development profile
+application-prod.yml  → Production profile
+
+
+DOCKER IMAGES
+=============
+
+pet-adoption-backend:latest    → Spring Boot application
+pet-adoption-frontend:latest   → React application
+mongo:5.0                      → MongoDB database
+mongo-express:latest           → MongoDB admin UI
+
+
+CI/CD PIPELINE STAGES (Jenkins)
+===============================
+
+1. Checkout      → Clone repository
+2. Build         → Compile Java and React
+3. Test          → Unit and integration tests
+4. Quality       → SonarQube analysis
+5. Images        → Build Docker images
+6. Push          → Push to registry
+7. Deploy        → Deploy to staging
+8. Smoke Tests   → Verify deployment
+9. Security      → Run security scans
+
+
+GETTING STARTED CHECKLIST
+=========================
+
+[ ] Clone repository
+[ ] Copy .env.example to .env
+[ ] Install Java 11+
+[ ] Install Node.js 14+
+[ ] Install Docker & Docker Compose
+[ ] Run: docker-compose up -d
+[ ] Access: http://localhost:3000 (frontend)
+[ ] Access: http://localhost:8080/api (backend)
+[ ] Access: http://localhost:8081 (MongoDB Express)
