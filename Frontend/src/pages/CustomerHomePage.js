@@ -21,39 +21,27 @@ const NAV = [
   { id: 'settings',      icon: '⚙️', label: 'Settings' },
 ];
 
-/* ── Shared pet loader: localStorage first, then backend ── */
+/* ── Shared pet loader: backend first, then localStorage ── */
 async function loadAllPets() {
-  // Always read fresh from localStorage — never cache in memory
+  // Try backend first
+  try {
+    const res = await fetch('http://localhost:5000/api/pets');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        localStorage.setItem('adminPets', JSON.stringify(data));
+        return data;
+      }
+    }
+  } catch (_) {}
+
+  // Fallback to localStorage
   try {
     const raw = localStorage.getItem('adminPets');
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        // Always return a fresh copy to force React re-render
         return parsed.map(p => ({ ...p }));
-      }
-    }
-  } catch (_) {}
-
-  // Fallback to other keys
-  for (const key of ['pets', 'petsList']) {
-    try {
-      const raw = localStorage.getItem(key);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed.map(p => ({ ...p }));
-      }
-    } catch (_) {}
-  }
-
-  // Try backend
-  try {
-    const res = await fetch('http://localhost:5000/api/pets');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        localStorage.setItem('adminPets', JSON.stringify(data));
-        return data;
       }
     }
   } catch (_) {}
@@ -2695,7 +2683,7 @@ function AIAssistant() {
 }
 
 /* ── PROFILE ── */
-function ProfilePage({ user }) {
+function ProfilePage({ user, setUser }) {
   const loginTime = localStorage.getItem('customerLoginTime') || 'N/A';
   const [form, setForm] = useState({
     firstName: user.firstName || '',
@@ -2711,6 +2699,7 @@ function ProfilePage({ user }) {
     // Update currentUser in localStorage with new profile data
     const updated = { ...user, ...form };
     localStorage.setItem('currentUser', JSON.stringify(updated));
+    if (setUser) setUser(updated);
     setSaved(true);
     toast.success('Profile updated! ✅');
     setTimeout(() => setSaved(false), 2000);
@@ -2807,10 +2796,28 @@ function ProfilePage({ user }) {
 /* ── MAIN COMPONENT ── */
 export default function CustomerHomePage() {
   const navigate = useNavigate();
-  const [user] = useState(() => { try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch { return {}; } });
+  const [user, setUser] = useState(() => { try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch { return {}; } });
   const [active, setActive] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [unreadNotifCount, setUnreadNotifCount] = useState(0);
+
+  // Fetch user profile from DB to keep UI fresh
+  useEffect(() => {
+    if (user?.id && !user.id.startsWith('local_')) {
+      fetch(`http://localhost:5000/api/users/${user.id}`)
+        .then(res => {
+          if (res.ok) return res.json();
+        })
+        .then(dbUser => {
+          if (dbUser) {
+            const merged = { ...user, ...dbUser, userType: 'CUSTOMER' };
+            localStorage.setItem('currentUser', JSON.stringify(merged));
+            setUser(merged);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [user?.id]);
 
   // Count unread customer notifications
   useEffect(() => {
@@ -2845,7 +2852,7 @@ export default function CustomerHomePage() {
       case 'browse':       return <BrowsePets navigate={navigate} />;
       case 'rescued':      return <RescuedPets />;
       case 'assistant':    return <AIAssistant />;
-      case 'profile':      return <ProfilePage user={user} />;
+      case 'profile':      return <ProfilePage user={user} setUser={setUser} />;
       case 'ai-recs':      return <AIRecommendations user={user} navigate={navigate} />;
       case 'favorites':    return <FavouritesPage user={user} navigate={navigate} />;
       case 'requests':     return <CustomerAdoptionRequests user={user} />;

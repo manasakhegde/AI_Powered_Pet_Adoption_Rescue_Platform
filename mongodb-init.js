@@ -54,7 +54,7 @@ if (!adminExists) {
     firstName: 'Admin',
     lastName: 'User',
     email: 'admin@gmail.com',
-    password: '$2a$10$8K1p/a0dL0l3YyR9hY1zqeqHs3uVxvL8l.SiW3t3L1xJb3eQp1VdK',
+    password: '$2b$10$U/7mltE7PEbnuezRF67tNephI5nuRDkQIb.gu9PGjABt83emj.cpu',
     role: 'ADMIN',
     enabled: true,
     createdAt: new Date(),

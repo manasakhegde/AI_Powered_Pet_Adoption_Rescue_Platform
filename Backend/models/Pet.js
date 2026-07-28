@@ -1,0 +1,30 @@
+const mongoose = require('mongoose');
+const petSchema = new mongoose.Schema({
+    name: String,
+    species: String,
+    breed: String,
+    age: Number,
+    ageUnit: String,
+    gender: String,
+    size: String,
+    color: String,
+    description: String,
+    imageUrls: [String],
+    healthStatus: String,
+    vaccinated: Boolean,
+    neutered: Boolean,
+    microchipId: String,
+    adoptionStatus: { type: String, default: 'Available' },
+    registrationDate: { type: Date, default: Date.now },
+    lastUpdated: { type: Date, default: Date.now },
+    rescueCenter: String,
+    location: String,
+    adoptionFee: Number,
+    notes: String,
+    viewCount: { type: Number, default: 0 },
+    ownerName: String,
+    ownerPhone: String,
+    ownerEmail: String,
+    ownerAddress: String
+});
+module.exports = mongoose.model('Pet', petSchema, 'pets');

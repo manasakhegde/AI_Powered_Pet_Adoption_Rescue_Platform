@@ -225,7 +225,7 @@ function AdoptionRequests() {
     })
       .then(r => r.ok ? r.json() : null)
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           localStorage.setItem('adoptionRequests', JSON.stringify(data));
           setRequests(data);
         }
@@ -1859,7 +1859,7 @@ function ManagePets() {
       const res = await fetch('http://localhost:5000/api/pets');
       if (res.ok) {
         const data = await res.json();
-        if (data.length > 0) {
+        if (Array.isArray(data)) {
           localStorage.setItem('adminPets', JSON.stringify(data));
           setPets(data.map(p => ({
             ...p,
@@ -2416,7 +2416,7 @@ function ManageUsers() {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
         signal: AbortSignal.timeout(3000),
       }).then(r => r.ok ? r.json() : null).then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           const backendUsers = data.map(u => {
             const userReqs = requests.filter(r => r.userEmail === u.email || r.customerEmail === u.email);
             const userPays = payments.filter(p => p.customerEmail === u.email);

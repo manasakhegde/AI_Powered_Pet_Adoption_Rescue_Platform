@@ -116,6 +116,7 @@ function CustomerLoginPage() {
           localStorage.setItem('currentUser', JSON.stringify({
             id: data.id, firstName: data.firstName, lastName: data.lastName,
             email: data.email, role: data.role, userType: 'CUSTOMER',
+            phone: data.phone || '', city: data.city || '', address: data.address || ''
           }));
           localStorage.setItem('customerLoginTime', new Date().toLocaleString());
           toast.success(`Welcome back, ${data.firstName}! 🐾`);
@@ -189,6 +190,7 @@ function CustomerLoginPage() {
           localStorage.setItem('currentUser', JSON.stringify({
             id: data.id, firstName: data.firstName, lastName: data.lastName,
             email: data.email, role: data.role, userType: 'CUSTOMER',
+            phone: data.phone || '', city: data.city || '', address: data.address || ''
           }));
           toast.success(`Account created! Welcome, ${data.firstName}! 🐾`);
           setTimeout(() => navigate('/customer/home'), 900);

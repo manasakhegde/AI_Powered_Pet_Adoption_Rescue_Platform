@@ -4,8 +4,8 @@ A full-stack web application for managing pet adoptions and rescue operations.
 
 ## Tech Stack
 
-- **Backend**: Java Spring Boot with Maven
-- **Frontend**: React with Node.js
+- **Backend**: Node.js and Express
+- **Frontend**: React
 - **Database**: MongoDB
 - **CI/CD**: Jenkins
 - **Containerization**: Docker & Docker Compose
@@ -13,12 +13,11 @@ A full-stack web application for managing pet adoptions and rescue operations.
 ## Quick Start
 
 ### Prerequisites
-- Java 11+
 - Node.js 14+
 - MongoDB 4.4+
-- Docker & Docker Compose
+- Docker & Docker Compose (Optional)
 
-### Using Docker Compose (Recommended)
+### Using Docker Compose (Optional)
 
 ```bash
 # Clone and navigate
@@ -33,7 +32,7 @@ docker-compose up -d
 
 # Access the application
 # Frontend:  http://localhost:3000
-# API:       http://localhost:8080/api
+# API:       http://localhost:5000/api
 # DB Admin:  http://localhost:8081
 ```
 
@@ -42,8 +41,8 @@ docker-compose up -d
 #### Backend
 ```bash
 cd Backend
-mvn clean install
-mvn spring-boot:run
+npm install
+npm start
 ```
 
 #### Frontend
@@ -57,9 +56,11 @@ npm start
 
 MongoDB collections:
 - `pets` - Pet listings
-- `users` - User accounts
+- `customers` - User accounts
+- `admins` - Admin accounts
 - `adoptions` - Adoption applications
-- `rescues` - Rescue operations
+- `rescue_centers` - Rescue operations
+- `rescue_reports` - Rescue operation reports
 
 **Default credentials**:
 - Username: admin
@@ -67,25 +68,24 @@ MongoDB collections:
 
 ## API Endpoints
 
-Base URL: `http://localhost:8080/api`
+Base URL: `http://localhost:5000/api`
 
 ### Pets
 - `GET /api/pets` - Get all pets
-- `GET /api/pets/available` - Get available pets
 - `GET /api/pets/{id}` - Get pet details
 - `POST /api/pets` - Create new pet
 - `PUT /api/pets/{id}` - Update pet
 - `DELETE /api/pets/{id}` - Delete pet
-- `GET /api/pets/species/{species}` - Filter by species
-- `GET /api/pets/location/{location}` - Filter by location
 
 ## Project Structure
 
 ```
 .
-├── Backend/                     # Spring Boot backend
-│   ├── src/
-│   ├── pom.xml
+├── Backend/                     # Node.js backend
+│   ├── models/
+│   ├── routes/
+│   ├── package.json
+│   ├── server.js
 │   └── Dockerfile
 ├── Frontend/                    # React frontend
 │   ├── src/
