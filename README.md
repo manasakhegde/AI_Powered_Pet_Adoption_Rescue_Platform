@@ -1,6 +1,25 @@
-# Pet Adoption and Rescue Platform
+# 🏡🐾FurEver Home (AI Powered Pet Adoption and Rescue Platform)
 
-A full-stack web application for managing pet adoptions and rescue operations.
+FurEver Home 🏡🐾 is a pet adoption and rescue platform dedicated to connecting rescued animals with loving forever homes. We support adoption, rescue efforts, and responsible pet ownership, giving every pet a second chance at a happy life.A full-stack web application for managing pet adoptions and rescue operations.
+
+🌟 About the Project
+
+Every year, thousands of pets are abandoned or left without a home. FurEver Home bridges the gap between rescue shelters and compassionate adopters by providing a secure and user-friendly platform where users can:
+
+🐶 Browse pets available for adoption
+
+🐱 View detailed pet profiles with photos and health information
+
+❤️ Submit adoption requests
+
+🏥 Connect with verified rescue organizations and shelters
+
+📍 Find pets based on location and preferences
+
+🔔 Receive updates on adoption requests and rescued pets
+
+🤖 AI-based pet recommendations
+
 
 ## Tech Stack
 
@@ -10,72 +29,23 @@ A full-stack web application for managing pet adoptions and rescue operations.
 - **CI/CD**: Jenkins
 - **Containerization**: Docker & Docker Compose
 
-## Quick Start
+**Configure Environment Variables**
 
-### Prerequisites
-- Node.js 14+
-- MongoDB 4.4+
-- Docker & Docker Compose (Optional)
+**Start the Backend**
 
-### Using Docker Compose (Optional)
+npm run dev
 
-```bash
-# Clone and navigate
-git clone <repo-url>
-cd pet-adoption-platform
+**Start the Frontend**
 
-# Copy environment file
-cp .env.example .env
+cd frontend
 
-# Start all services
-docker-compose up -d
-
-# Access the application
-# Frontend:  http://localhost:3000
-# API:       http://localhost:5000/api
-# DB Admin:  http://localhost:8081
-```
-
-### Local Development
-
-#### Backend
-```bash
-cd Backend
-npm install
 npm start
-```
 
-#### Frontend
-```bash
-cd Frontend
-npm install
-npm start
-```
+**Visit:**
 
-## Database
+http://localhost:3000
 
-MongoDB collections:
-- `pets` - Pet listings
-- `customers` - User accounts
-- `admins` - Admin accounts
-- `adoptions` - Adoption applications
-- `rescue_centers` - Rescue operations
-- `rescue_reports` - Rescue operation reports
 
-**Default credentials**:
-- Username: admin
-- Password: password
-
-## API Endpoints
-
-Base URL: `http://localhost:5000/api`
-
-### Pets
-- `GET /api/pets` - Get all pets
-- `GET /api/pets/{id}` - Get pet details
-- `POST /api/pets` - Create new pet
-- `PUT /api/pets/{id}` - Update pet
-- `DELETE /api/pets/{id}` - Delete pet
 
 ## Project Structure
 
@@ -95,34 +65,7 @@ Base URL: `http://localhost:5000/api`
 ├── Jenkinsfile
 ├── mongodb-init.js
 └── README.md
-```
 
-## Development Workflow
 
-1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Make changes and test locally
-3. Commit: `git commit -m "Add feature description"`
-4. Push: `git push origin feature/my-feature`
-5. Create Pull Request
 
-## Deployment
 
-### Staging
-```bash
-docker-compose up -d
-```
-
-### Production (with Jenkins)
-- Push to main branch
-- Jenkins pipeline automatically builds and deploys
-
-## Contributing
-
-1. Follow the development workflow
-2. Write tests for new features
-3. Ensure all tests pass
-4. Submit PR for review
-
-## License
-
-MIT License
